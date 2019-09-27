@@ -1,36 +1,56 @@
 require "pry"
 # This method uses a heap to sort an array.
-# Time Complexity:  ?
-# Space Complexity: ?
+# Time Complexity:  O (n log n) where n is the number of elements in the heap
+# Space Complexity: O (1)
+
+# Adapted from diagrams and pseudocode in https://medium.com/basecs/heapify-all-the-things-with-heap-sort-55ee1c93af82
+
 def heapsort(list)
+  limit = list.length
+  build_max_heap(list)
   
-  index = 0
-  while index < list.length
-    heapify(list.drop(index), 0)
-    
-    swap(list, index, list.length - 1)
-    binding.pry
-    index += 1
+  while limit > 0 # O(n)
+    swap(list, 0, limit - 1)
+    limit -= 1
+    heapify(list, 0, limit) # O(log n)
   end
+  
   return list
 end
 
-def heapify(list, index)
-  binding.pry
-  left = (2 * index) + 1
-  right = (2 * index) + 2
-
-  if !list[left] && !list[right]
-    return 
-  elsif !list[right]
-    min = left
-  else
-    min = [left, right].min_by {|x| list[x]}
+def build_max_heap(list)
+  index = list.length/2 - 1
+  while index >= 0
+    heapify(list, index, list.length) 
+    index -= 1
   end
+end
 
-  if list[index] > list[min]
-    swap(list, index, min)
-    heapify(list, min)
+
+def heapify(list, index, limit)
+  root = index
+
+  while index < limit
+    left = (2 * index) + 1
+    right = (2 * index) + 2
+
+    if left >= limit && right >= limit
+      return
+    elsif right >= limit
+      max = left
+    else
+      max = [left, right].max_by {|x| list[x]}
+    end
+    
+    if list[max] > list[root]
+      root = max
+    else
+      return
+    end
+
+    swap(list, root, index)
+    
+    index = root
   end
 end
 

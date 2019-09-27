@@ -2,7 +2,6 @@ require_relative "test_helper"
 
 describe "heapsort" do
   it "sorts an empty array" do
-    skip
     # Arrange 
     list = []
 
@@ -14,7 +13,6 @@ describe "heapsort" do
   end
 
   it "can sort a 1-element array" do
-    skip
     # Arrange 
     list = [5]
 
